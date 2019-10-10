@@ -8,6 +8,7 @@ from apscheduler.executors.pool import ThreadPoolExecutor
 from app import api
 from app.config import website, database, task_cycle
 from app.database.insert import Session
+from app.logger import logs
 
 
 executor = ThreadPoolExecutor(max_workers=25)
@@ -21,7 +22,7 @@ def schedule(website_name):
     web = website[website_name]
     for k, v in web.items():
         for section in v:
-            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M')}  执行任务<{website_name} {section['section']}>")
+            logs.info(f"{datetime.now().strftime('%Y-%m-%d %H:%M')}  执行任务<{website_name} {section['section']}>")
             for i in range(1, 3):
                 section["page"] = i
                 news = getattr(api, website_name)(**section)
@@ -33,7 +34,7 @@ def schedule(website_name):
 
 
 def start_schedule():
-    print(f"开始执行爬虫任务，当前任务执行周期为@{hour}hours")
+    logs.info(f"开始执行爬虫任务，当前任务执行周期为@{hour}hours")
     for name in website.keys():
         scheduler.add_job(schedule, 'interval', hours=hour, seconds=second, args=(name,))
 
