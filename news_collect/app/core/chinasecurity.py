@@ -32,24 +32,23 @@ class ChinaSecurity(Collector):
 
         for a in articles:
             title = a.cssselect("a")[0].text
-            flag = True if re.findall(r"\d", title) else False
-            if flag:
-                url = a.cssselect("a")[0].get("href")
-                url = os.path.join(self.url, url)
-                save_date = a.cssselect("span")[0].text
-                save_date = time.strptime(save_date, "%y-%m-%d %H:%M")
-                response = r.get(url)
-                html = etree.HTML(response.content)
-                source = html.cssselect("body > div:nth-child(9) > div.box835.hidden.left > div.article > div.info > "
-                                        "p:nth-child(2) > em:nth-child(2)")[0].text[3:]
+            url = a.cssselect("a")[0].get("href")
+            url = os.path.join(self.url, url)
+            save_date = a.cssselect("span")[0].text
+            save_date = time.strptime(save_date, "%y-%m-%d %H:%M")
+            response = r.get(url)
+            html = etree.HTML(response.content)
+            source = html.cssselect("body > div:nth-child(9) > div.box835.hidden.left > div.article > div.info > "
+                                    "p:nth-child(2) > em:nth-child(2)")[0].text[3:]
+            try:
+                abstract = html.cssselect("div.article-t.hidden > p:nth-child(1)")[0].text.strip()
+            except IndexError:
                 try:
-                    abstract = html.cssselect("div.article-t.hidden > p:nth-child(1)")[0].text.strip()
+                    abstract = html.cssselect("div.article-t.hidden > div > p:nth-child(1)")[0].text.strip()
                 except IndexError:
-                    try:
-                        abstract = html.cssselect("div.article-t.hidden > div > p:nth-child(1)")[0].text.strip()
-                    except IndexError:
-                        abstract = None
+                    abstract = None
 
-                news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source, keyword=self.section)
-                news_collections.append(news)
+            news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source,
+                        keyword=self.section)
+            news_collections.append(news)
         return news_collections
