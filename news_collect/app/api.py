@@ -1,4 +1,5 @@
 from app.core import *
+from app.core.special import *
 from app.database.model import News
 from app.config import keyword
 
@@ -42,3 +43,12 @@ def revise(row: News):
                 row.keyword = section
                 return row
     return row
+
+
+def special_eastmoney():
+    ret = []
+    for i in range(1, 5):
+        sem = SpecialEastMoney(None, i)
+        news = sem.collect()
+        ret.extend(news)
+    return ret
