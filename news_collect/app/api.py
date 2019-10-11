@@ -1,7 +1,7 @@
 from app.core import *
 from app.core.special import *
 from app.database.model import News
-from app.config import keyword
+from app.config import keyword, by_keyword
 
 
 def eastmoney(section, path, page):
@@ -51,4 +51,15 @@ def special_eastmoney():
         sem = SpecialEastMoney(None, i)
         news = sem.collect()
         ret.extend(news)
+    return ret
+
+
+def special_eastmoney_search_api():
+    ret = []
+    keywords = by_keyword["eastmoney"]
+    for k in keywords:
+        for i in range(1, 5):
+            sems = SpecialEastMoneySearchApi(k, i)
+            news = sems.collect()
+            ret.extend(news)
     return ret
