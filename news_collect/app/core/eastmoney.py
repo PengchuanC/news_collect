@@ -62,24 +62,34 @@ def _collect(url):
     html = etree.HTML(content)
     span = html.cssselect('#newsListContent > li')
 
+    news_collection = extract_content(span)
+
+    return news_collection
+
+
+def extract_content(articles, keyword=None):
     news_collection = []
-    for s in span:
-        head = s.cssselect("div.text > p.title > a")[0]
+    for a in articles:
+        head = a.cssselect("div.text > p.title > a")[0]
         title = head.text.strip()
         url = head.get("href")
-        abstract = s.cssselect("div.text > p.info")[0].get("title")
-        abstract = abstract if abstract else s.cssselect("div.text > p.info")[0].text
+        abstract = a.cssselect("div.text > p.info")[0]
+        abstract = abstract.get("title") if abstract.get("title") else abstract.text
         abstract = re.sub(r"[\r\n\s]", "", abstract)
-        abstract = abstract.split("】")[-1] if abstract else abstract
+        abstract = abstract.split("】")[-1]
         patten = re.compile(r"[（](.*?)[）]", re.S)
         source = re.findall(patten, abstract) if abstract else None
         source = source[-1] if source else "东方财富"
-        save_date = s.cssselect("div.text > p.time")[0].text.strip()
+        save_date = a.cssselect("div.text > p.time")[0].text.strip()
         save_date = save_date.replace("月", "/")
         save_date = save_date.replace("日", "")
         save_date = f"{date.today().year}/{save_date}"
         save_date = time.strptime(save_date, "%Y/%m/%d %H:%M")
-        news = News(title=title, abstract=abstract, url=url, source=source, savedate=save_date)
+        if keyword:
+            news = News(title=title, abstract=abstract, url=url, source=source, savedate=save_date,
+                        keyword=keyword)
+        else:
+            news = News(title=title, abstract=abstract, url=url, source=source, savedate=save_date)
+
         news_collection.append(news)
     return news_collection
-
