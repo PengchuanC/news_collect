@@ -33,10 +33,20 @@ def schedule(website_name):
     session.close()
 
 
+def schedule_special():
+    session = Session(**database)
+    news = api.special_eastmoney()
+    for n in news:
+        session.insert_one(n)
+    session.close()
+
+
 def start_schedule():
     logs.info(f"开始执行爬虫任务，当前任务执行周期为@{hour}hours")
     for name in website.keys():
         scheduler.add_job(schedule, 'interval', hours=hour, seconds=second, args=(name,))
+
+    scheduler.add_job(schedule_special, 'interval', hours=hour, seconds=second, )
 
     scheduler.start()
 
