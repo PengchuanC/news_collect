@@ -48,6 +48,8 @@ class ChinaSecurity(Collector):
                     if p:
                         abstract = p
                         break
+                else:
+                    abstract = None
             except IndexError:
                 try:
                     # abstract = html.cssselect("div.article-t.hidden > div > p:nth-child(1)")[0].text.strip()
@@ -57,6 +59,8 @@ class ChinaSecurity(Collector):
                         if p:
                             abstract = p
                             break
+                    else:
+                        abstract = None
                 except IndexError:
                     abstract = None
 
