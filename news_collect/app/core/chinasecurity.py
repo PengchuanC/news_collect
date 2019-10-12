@@ -41,10 +41,22 @@ class ChinaSecurity(Collector):
             source = html.cssselect("body > div:nth-child(9) > div.box835.hidden.left > div.article > div.info > "
                                     "p:nth-child(2) > em:nth-child(2)")[0].text[3:]
             try:
-                abstract = html.cssselect("div.article-t.hidden > p:nth-child(1)")[0].text.strip()
+                # abstract = html.cssselect("div.article-t.hidden > p:nth-child(1)")[0].text.strip()
+                abstracts = html.cssselect("div.article-t.hidden > p")
+                for p in abstracts:
+                    p = p.text.strip()
+                    if p:
+                        abstract = p
+                        break
             except IndexError:
                 try:
-                    abstract = html.cssselect("div.article-t.hidden > div > p:nth-child(1)")[0].text.strip()
+                    # abstract = html.cssselect("div.article-t.hidden > div > p:nth-child(1)")[0].text.strip()
+                    abstracts = html.cssselect("div.article-t.hidden > div > p")
+                    for p in abstracts:
+                        p = p.text.strip()
+                        if p:
+                            abstract = p
+                            break
                 except IndexError:
                     abstract = None
 
