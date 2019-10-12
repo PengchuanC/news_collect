@@ -37,11 +37,32 @@ def kyodo(section, path, page):
 def revise(row: News):
     """纠错，根据config文件的关键字分布，对新闻重新分组"""
     title = row.title
-    for section, keywords in keyword.items():
-        for k in keywords:
-            if k in title:
-                row.keyword = section
-                return row
+    content = row.abstract
+    company = keyword["商业"]
+    japan = keyword["日本"]
+    economy = keyword["宏观"]
+    finance = keyword["金融"]
+    for key in japan:
+        if any({key in title, key in content}):
+            row.keyword = ["日本"]
+            return row
+    for key in company:
+        if any({key in title, key in content}):
+            row.keyword = "商业"
+            return row
+    for key in finance:
+        if any({key in title, key in content}):
+            row.keyword = "金融"
+            break
+    for key in economy:
+        if any({key in title, key in content}):
+            row.keyword = "宏观"
+            return row
+    # for section, keywords in keyword.items():
+    #     for k in keywords:
+    #         if k in title:
+    #             row.keyword = section
+    #             return row
     return row
 
 
