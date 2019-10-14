@@ -28,7 +28,8 @@ def schedule(website_name):
                 news = getattr(api, website_name)(**section)
                 for n in news:
                     n = api.revise(n)
-                    session.insert_one(n)
+                    if n:
+                        session.insert_one(n)
 
     session.close()
 
