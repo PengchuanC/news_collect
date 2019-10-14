@@ -1,7 +1,7 @@
 from app.core import *
 from app.core.special import *
 from app.database.model import News
-from app.config import keyword, by_keyword
+from app.config import keyword, by_keyword, ignore
 
 
 def eastmoney(section, path, page):
@@ -38,6 +38,11 @@ def revise(row: News):
     """纠错，根据config文件的关键字分布，对新闻重新分组"""
     title = row.title
     content = row.abstract
+
+    for ign in ignore:
+        if ign in title:
+            return None
+
     company = keyword["商业"]
     japan = keyword["日本"]
     economy = keyword["宏观"]
