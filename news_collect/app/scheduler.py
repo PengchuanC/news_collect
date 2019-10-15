@@ -50,6 +50,14 @@ def schedule_special_search_api():
     session.close()
 
 
+def schedule_special_hibor():
+    session = Session(**database)
+    news = api.special_hibor()
+    for n in news:
+        session.insert_one(n)
+    session.close()
+
+
 def start_schedule():
     logs.info(f"开始执行爬虫任务，当前任务执行周期为@{hour}hours")
     for name in website.keys():
@@ -58,6 +66,8 @@ def start_schedule():
     scheduler.add_job(schedule_special, 'interval', hours=hour, seconds=second, )
 
     scheduler.add_job(schedule_special_search_api, 'interval', hours=hour, seconds=second, )
+
+    scheduler.add_job(schedule_special_hibor, 'interval', hours=hour, seconds=second, )
 
     scheduler.start()
 
