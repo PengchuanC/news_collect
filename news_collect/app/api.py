@@ -89,3 +89,14 @@ def special_eastmoney_search_api():
             news = sems.collect()
             ret.extend(news)
     return ret
+
+
+def special_hibor():
+    ret = []
+    keywords = by_keyword["hibor"]
+    for k in keywords:
+        for i in range(1, 2):
+            sems = SpecialHiBor(k, i)
+            news = sems.collect()
+            ret.extend(news)
+    return ret
