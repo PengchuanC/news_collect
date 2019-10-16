@@ -1,4 +1,5 @@
 import re
+import os
 from http import cookiejar
 
 import requests as r
@@ -8,13 +9,14 @@ from lxml.html import etree
 from app.core.special import SpecialCollector
 from app.config import header
 from app.database.model import News
+from app.config import base_dir
 
 
 class SpecialHiBor(SpecialCollector):
     login_url = "http://www.hibor.org/toplogin.asp?action=login"
     url = "http://www.hibor.org/newweb/web/search"
 
-    def cookie(self):
+    def get_cookie(self):
         payload = {
             "name": "13221735254",
             "pwd": "hb20191014",
@@ -23,16 +25,19 @@ class SpecialHiBor(SpecialCollector):
             "checkbox": "on"
         }
         session = r.session()
-        session.cookies = cookiejar.LWPCookieJar(filename="Cookies.txt")
+        session.cookies = cookiejar.LWPCookieJar(filename=os.path.join(base_dir, "./src/cookies.txt"))
         ret = session.post(self.login_url, data=payload, headers=header)
         session.cookies.save()
         session.close()
-        cookie = ret.headers["Set-Cookie"]
-        print(cookie)
-        cookie = re.sub(r"path=/,", "", cookie)
-        cookie = cookie.split(";")
-        cookie = [x for x in cookie if any({"robih" in x, "MBname" in x})]
-        cookie = f"MBpermission=0;{';'.join(cookie)}"
+        cookie = session.cookies
+        return cookie
+
+    def cookie(self):
+        cookie = os.path.join(base_dir, "./src/cookies.txt")
+        if os.path.exists(cookie):
+            cookie = cookiejar.LWPCookieJar(filename=cookie)
+        else:
+            cookie = self.get_cookie()
         return cookie
 
     def format_url(self):
@@ -43,8 +48,6 @@ class SpecialHiBor(SpecialCollector):
         url = self.url
         cookie = self.cookie()
 
-        header["Cookie"] = cookie
-
         data = {
             "index": 0,
             "f": "3x",
@@ -54,9 +57,14 @@ class SpecialHiBor(SpecialCollector):
             "sjfw": -7,
             "page": self.page
         }
+        session = r.session()
+        session.cookies = cookie
 
-        resp = r.post(url, headers=header, data=data)
+        resp = session.post(url, headers=header, data=data)
         content = resp.content.decode("utf-8")
+        if not content:
+            self.get_cookie()
+            return
         content = etree.HTML(content)
         article = content.cssselect("#table1 >  tr")
 
@@ -74,6 +82,7 @@ class SpecialHiBor(SpecialCollector):
             abstract = "".join(abstract)
             news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source)
             news_collections.append(news)
+        session.close()
         return news_collections
 
 
