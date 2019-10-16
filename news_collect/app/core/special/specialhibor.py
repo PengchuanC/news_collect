@@ -1,7 +1,5 @@
-import json
 import re
 from http import cookiejar
-from urllib.parse import urlencode
 
 import requests as r
 import cssselect
@@ -9,8 +7,6 @@ from lxml.html import etree
 
 from app.core.special import SpecialCollector
 from app.config import header
-from app.error import NetworkError
-from app.core.eastmoney import extract_content
 from app.database.model import News
 
 
@@ -32,6 +28,7 @@ class SpecialHiBor(SpecialCollector):
         session.cookies.save()
         session.close()
         cookie = ret.headers["Set-Cookie"]
+        print(cookie)
         cookie = re.sub(r"path=/,", "", cookie)
         cookie = cookie.split(";")
         cookie = [x for x in cookie if any({"robih" in x, "MBname" in x})]
