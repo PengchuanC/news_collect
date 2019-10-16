@@ -64,6 +64,7 @@ class Similar(object):
         def func(*args, **kwargs):
             ret = inner(*args, **kwargs)
             ret = [Similar.check(x.title) for x in ret]
+            ret = [x for x in ret if x]
             return ret
 
         return func
