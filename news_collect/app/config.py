@@ -1,3 +1,4 @@
+import os
 
 
 # 数据库
@@ -98,3 +99,6 @@ by_keyword = {
     "eastmoney": ["公募基金", "etf"],
     "hibor": ["资产配置"]
 }
+
+# 项目路径
+base_dir = os.path.dirname(__file__)
