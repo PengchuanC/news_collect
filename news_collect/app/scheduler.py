@@ -67,7 +67,7 @@ def start_schedule():
 
     scheduler.add_job(schedule_special_search_api, 'interval', hours=hour, seconds=second, )
 
-    scheduler.add_job(schedule_special_hibor, 'interval', hours=hour, seconds=second, )
+    scheduler.add_job(schedule_special_hibor, 'interval', hours=12, seconds=second, )
 
     scheduler.start()
 

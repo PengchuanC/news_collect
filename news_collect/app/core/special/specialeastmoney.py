@@ -56,7 +56,6 @@ class SpecialEastMoneySearchApi(SpecialCollector):
     def collect(self):
         url = self.format_url()
         header["Referer"] = self.refer
-        print(url)
         response = r.get(url, headers=header)
         if response.status_code != 200:
             raise NetworkError(f"东方财富网访问失败\n\tstatus_code: {response.status_code}\n\turl:{url}")
@@ -64,6 +63,9 @@ class SpecialEastMoneySearchApi(SpecialCollector):
         data = json.loads(content)["Data"]
 
         news_collection = []
+
+        if not data:
+            return news_collection
 
         for d in data:
             title = re.sub(r"[<em></em>]", "", d["Title"])

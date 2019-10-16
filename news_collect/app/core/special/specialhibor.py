@@ -1,4 +1,3 @@
-import re
 import os
 from http import cookiejar
 
