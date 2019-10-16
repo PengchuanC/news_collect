@@ -81,7 +81,8 @@ class SpecialHiBor(SpecialCollector):
             abstract = page.xpath("/html/body/div[2]/div[5]/div[1]/div[2]/div[8]/div[1]/div/p/span/text()")
             abstract = "".join(abstract)
             news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source)
-            news_collections.append(news)
+            if "期货" not in title:
+                news_collections.append(news)
         session.close()
         return news_collections
 
