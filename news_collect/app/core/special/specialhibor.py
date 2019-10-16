@@ -74,6 +74,7 @@ class SpecialHiBor(SpecialCollector):
             page = r.post(url, headers=header).content
             page = etree.HTML(page)
             abstract = page.xpath("/html/body/div[2]/div[5]/div[1]/div[2]/div[8]/div[1]/div/p/span/text()")
+            abstract = "".join(abstract)
             news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source)
             news_collections.append(news)
         return news_collections
