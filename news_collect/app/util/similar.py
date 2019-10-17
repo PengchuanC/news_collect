@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from functools import lru_cache, wraps
 
 from jieba import lcut
@@ -35,8 +35,12 @@ class Similar(object):
         """样本集
         :return: List<News>
         """
+        today = date.today()
+        yesterday = today - timedelta(days=1)
         session = Session(**database).session
-        ret = session.query(News.title).filter(News.savedate >= date.today()).all()
+        ret = session.query(News.title).filter(News.savedate >= today).all()
+        if len(ret) == 0:
+            ret = session.query(News.title).filter(News.savedate >= yesterday).all()
         ret = [x[0] for x in ret]
         session.close()
         return ret
