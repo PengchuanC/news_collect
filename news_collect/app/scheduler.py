@@ -69,6 +69,8 @@ def start_schedule():
 
     scheduler.add_job(schedule_special_hibor, 'interval', hours=12, seconds=second, )
 
+    schedule_special_hibor()
+
     scheduler.start()
 
     while True:
