@@ -96,8 +96,7 @@ def special_hibor():
     ret = []
     keywords = by_keyword["hibor"]
     for k in keywords:
-        for i in range(1, 3):
-            sems = SpecialHiBor(k, i)
-            news = sems.collect()
-            ret.extend(news)
+        sems = SpecialHiBor(k, 1)
+        news = sems.collect()
+        ret.extend(news)
     return ret
