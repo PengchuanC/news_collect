@@ -67,7 +67,6 @@ class SpecialHiBor(SpecialCollector):
             return
         content = etree.HTML(content)
         article = content.cssselect("#table1 >  tr")
-        print(content)
 
         news_collections = []
         for a in article:
