@@ -1,4 +1,5 @@
 import os
+import time
 from http import cookiejar
 
 import requests as r
@@ -17,10 +18,10 @@ class SpecialHiBor(SpecialCollector):
 
     def get_cookie(self):
         payload = {
-            "name": "13221735254",
-            "pwd": "hb20191014",
-            "tijiao.x": 30,
-            "tijiao.y": 18,
+            "name": "13269431992",
+            "pwd": "abcd1234",
+            "tijiao.x": 8,
+            "tijiao.y": 9,
             "checkbox": "on"
         }
         session = r.session()
@@ -45,7 +46,7 @@ class SpecialHiBor(SpecialCollector):
 
     def collect(self):
         url = self.url
-        cookie = self.cookie()
+        cookie = self.get_cookie()
 
         data = {
             "index": 0,
@@ -79,9 +80,11 @@ class SpecialHiBor(SpecialCollector):
             page = etree.HTML(page)
             abstract = page.xpath("/html/body/div[2]/div[5]/div[1]/div[2]/div[8]/div[1]/div/p/span/text()")
             abstract = "".join(abstract)
-            news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source)
+            news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source, keyword="资产配置")
             if "期货" not in title:
+                print(news)
                 news_collections.append(news)
+            time.sleep(5)
         session.close()
         return news_collections
 
