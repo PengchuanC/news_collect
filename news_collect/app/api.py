@@ -98,5 +98,6 @@ def special_hibor():
     for k in keywords:
         sems = SpecialHiBor(k, 1)
         news = sems.collect()
-        ret.extend(news)
+        if news:
+            ret.extend(news)
     return ret
