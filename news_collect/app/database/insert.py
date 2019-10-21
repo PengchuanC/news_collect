@@ -1,4 +1,5 @@
 from app.database import connector
+from app.logger import logs
 
 
 class Session(object):
@@ -10,7 +11,8 @@ class Session(object):
         self.session.add(row)
         try:
             self.session.commit()
-        except:
+        except Exception as e:
+            logs.error(e)
             self.session.rollback()
 
     def insert_all(self, rows):
