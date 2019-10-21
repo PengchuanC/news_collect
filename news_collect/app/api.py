@@ -3,6 +3,7 @@ from app.core.special import *
 from app.database.model import News
 from app.config import keyword, by_keyword, ignore
 from app.util.similar import Similar
+from app.logger import logs
 
 
 def eastmoney(section, path, page):
@@ -100,4 +101,5 @@ def special_hibor():
         news = sems.collect()
         if news:
             ret.extend(news)
+    logs.info("慧博资讯爬取完成")
     return ret
