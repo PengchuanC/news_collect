@@ -76,13 +76,12 @@ class SpecialHiBor(SpecialCollector):
             save_date = a.cssselect("td > div.tab_divtxt > span:nth-child(1) > strong")[0].text
             source = a.cssselect("td > div.tab_divtxt > span:nth-child(3)")[0].text
             source = f"慧博-{source[3:]}"
-            page = r.post(url, headers=header).content
+            page = session.post(url, headers=header).content
             page = etree.HTML(page)
             abstract = page.xpath("/html/body/div[2]/div[5]/div[1]/div[2]/div[8]/div[1]/div/p/span/text()")
             abstract = "".join(abstract)
             news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source, keyword="资产配置")
             if "期货" not in title:
-                print(news)
                 news_collections.append(news)
             time.sleep(5)
         session.close()
