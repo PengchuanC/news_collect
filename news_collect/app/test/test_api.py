@@ -24,7 +24,8 @@ class TestApi(unittest.TestCase):
         news = eastmoney("金融", "news/czqyw", 1)
         for n in news:
             n_r = revise(n)
-            print(n_r.title, n.keyword)
+            if not n_r:
+                break
             if n_r.keyword != n.keyword:
                 print(n_r.to_dict())
 
@@ -32,6 +33,8 @@ class TestApi(unittest.TestCase):
         news = caixin("商业", "companies", 1)
         for n in news:
             n_r = revise(n)
+            if not n_r:
+                break
             print(n_r.title, n.keyword)
             if n_r.keyword != n.keyword:
                 print(n_r.to_dict())
