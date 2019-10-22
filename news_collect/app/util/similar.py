@@ -30,7 +30,6 @@ class Similar(object):
         return news
 
     @staticmethod
-    @lru_cache(15)
     def simple():
         """样本集
         :return: List<News>
