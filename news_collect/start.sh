@@ -4,4 +4,4 @@ clear
 cd `dirname $0`
 pwd
 
-python3 -m app
+/usr/bin/python3 -m app
