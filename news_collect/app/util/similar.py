@@ -10,6 +10,7 @@ from gensim.models import TfidfModel
 from app.database.model import News
 from app.database.insert import Session
 from app.config import database_remote as database
+from app.logger import logs
 
 
 class Similar(object):
@@ -30,16 +31,19 @@ class Similar(object):
         return news
 
     @staticmethod
-    def simple():
+    def one_week():
+        today = date.today()
+        one_week = today - timedelta(days=3)
+        return one_week
+
+    @staticmethod
+    @lru_cache(None)
+    def simple(_date):
         """样本集
         :return: List<News>
         """
-        today = date.today()
-        yesterday = today - timedelta(days=1)
         session = Session(**database).session
-        ret = session.query(News.title).filter(News.savedate >= today).all()
-        if len(ret) == 0:
-            ret = session.query(News.title).filter(News.savedate >= yesterday).all()
+        ret = session.query(News.title).filter(News.savedate >= _date).all()
         ret = [x[0] for x in ret]
         session.close()
         return ret
@@ -50,7 +54,8 @@ class Similar(object):
 
     @staticmethod
     def dictionary():
-        simple = Similar.simple()
+        _date = Similar.one_week()
+        simple = Similar.simple(_date)
         stop = ['x', 'c', 'u', 'd', 'p', 't', 'uj', 'r']
         ret = [posseg.lcut(x) for x in simple]
         ret = [i for texts in ret for i in texts]
@@ -66,8 +71,9 @@ class Similar(object):
         @wraps(inner)
         def func(*args, **kwargs):
             ret = inner(*args, **kwargs)
-            ret = [Similar.check(x.title) for x in ret]
-            ret = [x for x in ret if x]
+            different = [Similar.check(x.title) for x in ret]
+            logs.info("以下新闻因重复暂不录入数据库：", [x for x in ret if x.title not in different])
+            ret = [x for x in ret if x.title in different]
             return ret
 
         return func
