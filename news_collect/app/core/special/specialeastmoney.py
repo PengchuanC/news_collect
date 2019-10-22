@@ -75,7 +75,8 @@ class SpecialEastMoneySearchApi(SpecialCollector):
             save_date = d["ShowTime"]
             news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source,
                         keyword=self.keyword)
-            news_collection.append(news)
+            if "期权" not in news.title:
+                news_collection.append(news)
         return news_collection
 
 
