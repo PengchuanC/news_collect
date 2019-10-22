@@ -44,9 +44,8 @@ class ChinaSecurity(Collector):
                 # abstract = html.cssselect("div.article-t.hidden > p:nth-child(1)")[0].text.strip()
                 abstracts = html.cssselect("div.article-t.hidden > p")
                 for p in abstracts:
-                    p = p.text.strip()
-                    if p:
-                        abstract = p
+                    if p.text:
+                        abstract = p.text.strip()
                         break
                 else:
                     abstract = None
@@ -55,9 +54,8 @@ class ChinaSecurity(Collector):
                     # abstract = html.cssselect("div.article-t.hidden > div > p:nth-child(1)")[0].text.strip()
                     abstracts = html.cssselect("div.article-t.hidden > div > p")
                     for p in abstracts:
-                        p = p.text.strip()
-                        if p:
-                            abstract = p
+                        if p.text:
+                            abstract = p.text.strip()
                             break
                     else:
                         abstract = None
