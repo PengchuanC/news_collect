@@ -6,30 +6,35 @@ from app.util.similar import Similar
 from app.logger import logs
 
 
+@Similar.check_similar
 def eastmoney(section, path, page):
     em = EastMoney(section, path, page)
     news = em.collect()
     return news
 
 
+@Similar.check_similar
 def caixin(section, path, page):
     cx = CaiXin(section, path, page)
     news = cx.collect()
     return news
 
 
+@Similar.check_similar
 def chinasecurity(section, path, page):
     cs = ChinaSecurity(section, path, page)
     news = cs.collect()
     return news
 
 
+@Similar.check_similar
 def sina(section, path, page):
     s = Sina(section, path, page)
     news = s.collect()
     return news
 
 
+@Similar.check_similar
 def kyodo(section, path, page):
     kd = Kyodo(section, path, page)
     news = kd.collect()
@@ -73,6 +78,7 @@ def revise(row: News):
     return row
 
 
+@Similar.check_similar
 def special_eastmoney():
     ret = []
     for i in range(1, 5):
@@ -82,6 +88,7 @@ def special_eastmoney():
     return ret
 
 
+@Similar.check_similar
 def special_eastmoney_search_api():
     ret = []
     keywords = by_keyword["eastmoney"]
