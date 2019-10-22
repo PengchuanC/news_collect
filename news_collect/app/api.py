@@ -55,7 +55,7 @@ def revise(row: News):
     economy = keyword["宏观"]
     finance = keyword["金融"]
     for key in japan:
-        if any({key in title, key in content}):
+        if any({key in title}):
             row.keyword = ["日本"]
             return row
     for key in company:
