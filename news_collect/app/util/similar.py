@@ -88,6 +88,8 @@ class Similarity(object):
         """
         session = Session(**database).session
         ret = session.query(News.title, News.abstract).filter(News.savedate >= _date).all()
+        if not ret:
+            ret = session.query(News.title, News.abstract).filter(News.savedate >= _date - timedelta(days=1)).all()
         session.close()
         ret = [Similarity.reduce(x[0] + x[1]) for x in ret]
         return ret
