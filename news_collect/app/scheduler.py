@@ -61,6 +61,7 @@ def schedule_special_hibor():
 def start_schedule():
     logs.info(f"开始执行爬虫任务，当前任务执行周期为@{hour}hours")
     for name in website.keys():
+        schedule(name)
         scheduler.add_job(schedule, 'interval', hours=hour, seconds=second, args=(name,))
 
     scheduler.add_job(schedule_special, 'interval', hours=hour, seconds=second, )
@@ -70,6 +71,8 @@ def start_schedule():
     scheduler.add_job(schedule_special_hibor, 'interval', hours=12, seconds=second, )
 
     schedule_special_hibor()
+
+    schedule_special()
 
     scheduler.start()
 
