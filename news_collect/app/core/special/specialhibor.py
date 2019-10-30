@@ -62,7 +62,6 @@ class SpecialHiBor(SpecialCollector):
         session.cookies = cookie
         resp = session.post(url, headers=header, data=data)
         content = resp.content.decode("utf-8")
-        print(resp.status_code, resp.content)
         if not content:
             self.get_cookie()
             return
