@@ -10,7 +10,6 @@ from app.core.special import SpecialCollector
 from app.config import header
 from app.database.model import News
 from app.config import base_dir
-from app.util.ip_pool import run
 
 
 class SpecialHiBor(SpecialCollector):
@@ -26,11 +25,9 @@ class SpecialHiBor(SpecialCollector):
             "tijiao.y": 9,
             "checkbox": "on"
         }
-        self.proxy = run()
-        print(self.proxy)
         session = r.session()
         session.cookies = cookiejar.LWPCookieJar(filename=os.path.join(base_dir, "./src/cookies.txt"))
-        ret = session.post(self.login_url, data=payload, headers=header, proxies=self.proxy)
+        ret = session.post(self.login_url, data=payload, headers=header)
         session.cookies.save()
         session.close()
         cookie = session.cookies
@@ -63,9 +60,7 @@ class SpecialHiBor(SpecialCollector):
         }
         session = r.session()
         session.cookies = cookie
-        session.proxies = self.proxy
-        print(self.proxy)
-        resp = session.post(url, headers=header, proxies=self.proxy, data=data)
+        resp = session.post(url, headers=header, data=data)
         content = resp.content.decode("utf-8")
         print(resp.status_code, resp.content)
         if not content:
