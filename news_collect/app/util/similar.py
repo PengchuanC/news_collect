@@ -115,7 +115,6 @@ class Similarity(object):
             for s in simple:
                 ratio = Similarity.check(s, title)
                 if ratio > 30:
-                    print(ratio, n.title)
                     break
             else:
                 all_news.append(n)
