@@ -108,6 +108,7 @@ class Similarity(object):
 
     @staticmethod
     def compare(news):
+        news = [x for x in news if x.abstract]
         all_news = []
         simple = Similarity.simple(date.today())
         for n in news:
