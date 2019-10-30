@@ -108,25 +108,27 @@ class Similarity(object):
 
     @staticmethod
     def compare(news):
-        title = Similarity.reduce(news.title + news.abstract)
+        all_news = []
         simple = Similarity.simple(date.today())
-        for s in simple:
-            ratio = Similarity.check(s, title)
-            if ratio > 25:
-                print(s)
-                return
-        return news
+        for n in news:
+            title = Similarity.reduce(n.title + str(n.abstract))
+            for s in simple:
+                ratio = Similarity.check(s, title)
+                if ratio > 30:
+                    print(ratio, n.title)
+                    break
+            else:
+                all_news.append(n)
+        return all_news
 
     @staticmethod
     def check_similar(inner):
         @wraps(inner)
         def func(*args, **kwargs):
             ret = inner(*args, **kwargs)
-            different = [Similarity.compare(x) for x in ret]
+            different = Similarity.compare(ret)
             logs.info(f"以下新闻因重复暂不录入数据库：{[x for x in ret if x.title not in different]}")
-            ret = [x for x in ret if x.title in different]
-            return ret
-
+            return different
         return func
 
 
