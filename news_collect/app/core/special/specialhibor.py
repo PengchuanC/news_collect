@@ -10,11 +10,13 @@ from app.core.special import SpecialCollector
 from app.config import header
 from app.database.model import News
 from app.config import base_dir
+from app.util.ip_pool import run
 
 
 class SpecialHiBor(SpecialCollector):
     login_url = "http://www.hibor.org/toplogin.asp?action=login"
     url = "http://www.hibor.org/newweb/web/search"
+    proxy = None
 
     def get_cookie(self):
         payload = {
@@ -24,9 +26,11 @@ class SpecialHiBor(SpecialCollector):
             "tijiao.y": 9,
             "checkbox": "on"
         }
+        self.proxy = run()
+        print(self.proxy)
         session = r.session()
         session.cookies = cookiejar.LWPCookieJar(filename=os.path.join(base_dir, "./src/cookies.txt"))
-        ret = session.post(self.login_url, data=payload, headers=header)
+        ret = session.post(self.login_url, data=payload, headers=header, proxies=self.proxy)
         session.cookies.save()
         session.close()
         cookie = session.cookies
@@ -59,9 +63,11 @@ class SpecialHiBor(SpecialCollector):
         }
         session = r.session()
         session.cookies = cookie
-
-        resp = session.post(url, headers=header, data=data)
+        session.proxies = self.proxy
+        print(self.proxy)
+        resp = session.post(url, headers=header, proxies=self.proxy, data=data)
         content = resp.content.decode("utf-8")
+        print(resp.status_code, resp.content)
         if not content:
             self.get_cookie()
             return
@@ -82,6 +88,7 @@ class SpecialHiBor(SpecialCollector):
             abstract = "".join(abstract)
             news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source, keyword="资产配置")
             if "期货" not in title:
+                print(news)
                 news_collections.append(news)
             time.sleep(5)
         session.close()
