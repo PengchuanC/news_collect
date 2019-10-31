@@ -127,7 +127,6 @@ class Similarity(object):
         def func(*args, **kwargs):
             ret = inner(*args, **kwargs)
             different = Similarity.compare(ret)
-            logs.info(f"以下新闻因重复暂不录入数据库：{[x for x in ret if x.title not in different]}")
             return different
         return func
 
