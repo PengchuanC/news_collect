@@ -7,7 +7,7 @@ database = {
     "password": "123456",
     "host": "localhost",
     "port": 3306,
-    "db": "fund_filter"
+    "db": "fund_filter_production"
 }
 
 
@@ -17,7 +17,7 @@ database_remote = {
     "password": "123456",
     "host": "cdb-p3ccshwm.cd.tencentcdb.com",
     "port": 10053,
-    "db": "fund_filter"
+    "db": "fund_filter_production"
 }
 
 
