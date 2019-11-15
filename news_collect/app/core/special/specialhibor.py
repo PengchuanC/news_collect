@@ -27,14 +27,14 @@ class SpecialHiBor(SpecialCollector):
         }
         session = r.session()
         session.cookies = cookiejar.LWPCookieJar(filename=os.path.join(base_dir, "./src/cookies.txt"))
-        ret = session.post(self.login_url, data=payload, headers=header)
+        session.post(self.login_url, data=payload, headers=header)
         session.cookies.save()
         session.close()
         cookie = session.cookies
         return cookie
 
     def cookie(self):
-        cookie = os.path.join(base_dir, "./src/cookies.txt")
+        cookie = os.path.join(base_dir, "src/cookies.txt")
         if os.path.exists(cookie):
             cookie = cookiejar.LWPCookieJar(filename=cookie)
         else:
