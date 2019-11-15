@@ -26,9 +26,9 @@ class SpecialHiBor(SpecialCollector):
             "checkbox": "on"
         }
         session = r.session()
-        session.cookies = cookiejar.LWPCookieJar(filename=os.path.join(base_dir, "./src/cookies.txt"))
+        session.cookies = cookiejar.LWPCookieJar(filename=os.path.join(base_dir, "src/cookies.txt"))
         session.post(self.login_url, data=payload, headers=header)
-        session.cookies.save()
+        # session.cookies.save()
         session.close()
         cookie = session.cookies
         return cookie
