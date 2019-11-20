@@ -87,7 +87,7 @@ class Similarity(object):
         :return: List<News>
         """
         session = Session(**database).session
-        ret = session.query(News.title, News.abstract).filter(News.savedate >= _date).all()
+        ret = session.query(News.title, News.abstract).filter(News.savedate >= _date - timedelta(days=5)).all()
         if not ret:
             ret = session.query(News.title, News.abstract).filter(News.savedate >= _date - timedelta(days=1)).all()
         session.close()
@@ -112,6 +112,9 @@ class Similarity(object):
         all_news = []
         simple = Similarity.simple(date.today())
         for n in news:
+            if n.keyword == "资产配置":
+                print(n)
+                all_news.append(n)
             title = Similarity.reduce(n.title + str(n.abstract))
             for s in simple:
                 ratio = Similarity.check(s, title)
