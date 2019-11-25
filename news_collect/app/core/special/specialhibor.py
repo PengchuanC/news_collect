@@ -21,7 +21,7 @@ class SpecialHiBor(SpecialCollector):
         payload = {
             "name": "13269431992",
             "pwd": "abcd1234",
-            "tijiao.x": 8,
+            "tijiao.x": 7,
             "tijiao.y": 9,
             "checkbox": "on"
         }
@@ -77,12 +77,13 @@ class SpecialHiBor(SpecialCollector):
             source = a.cssselect("td > div.tab_divtxt > span:nth-child(3)")[0].text
             source = f"慧博-{source[3:]}"
             page = session.post(url, headers=header).content
+            page = str(page, encoding="gbk")
             page = etree.HTML(page)
-            abstract = page.xpath("/html/body/div[2]/div[5]/div[1]/div[2]/div[8]/div[1]/div/p/span/text()")
+            abstract = page.xpath("//div[@class='p_main']/p/span/text()")
             abstract = "".join(abstract)
             news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source, keyword="资产配置")
             if "期货" not in title:
-                print(news)
+                print(news.to_dict())
                 news_collections.append(news)
             time.sleep(5)
         session.close()
