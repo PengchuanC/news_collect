@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.config import database
+from app.config import database_remote as database
 
 
 def engine(user, password, host, port, db):
