@@ -6,7 +6,7 @@ from apscheduler.executors.pool import ThreadPoolExecutor
 
 
 from app import api
-from app.config import website, database_remote as database, task_cycle
+from app.config import website, database, task_cycle
 from app.database.insert import Session
 from app.logger import logs
 

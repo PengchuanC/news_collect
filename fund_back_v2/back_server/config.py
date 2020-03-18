@@ -26,12 +26,12 @@ class Config:
 class ProductionConfig(Config):
     """运行环境配置"""
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-                              'mysql+pymysql://fund:123456@sh-cdb-1ier4gdm.sql.tencentcdb.com:61694' \
+                              'mysql+pymysql://fund:123456@cdb-p3ccshwm.cd.tencentcdb.com:10053' \
                               '/fund_filter_production?charset=utf8mb4'
 
 
 class DevelopmentConfig(Config):
-    DATABASE = ('root', "PCCpcc213", "cdb-p3ccshwm.cd.tencentcdb.com:10053")
+    DATABASE = ('fund', "123456", "cdb-p3ccshwm.cd.tencentcdb.com:10053")
     user, password, host = DATABASE
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
                    f"mysql+pymysql://{user}:{password}@{host}/fund_filter_production?charset=utf8mb4"

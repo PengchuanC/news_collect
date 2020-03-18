@@ -5,9 +5,9 @@ import os
 database = {
     "user": "fund",
     "password": "123456",
-    "host": "localhost",
+    "host": "10.170.139.10",
     "port": 3306,
-    "db": "fund_filter_production"
+    "db": "fund_filter_django"
 }
 
 

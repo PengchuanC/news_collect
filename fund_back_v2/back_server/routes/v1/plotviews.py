@@ -1,10 +1,10 @@
 from pandas import cut
 from math import ceil
 
-from flask_restful import Api, Resource, marshal_with, fields, reqparse
+from flask_restful import Api, Resource, marshal_with, fields, reqparse, request
 
 from . import rest
-from ...models import Classify, IndicatorsForPlot as IFP, BasicInfo, db
+from ...models import Classify, IndicatorsForPlot as IFP, BasicInfo, db, Indicators, FundManagerExtend, FundManager
 
 
 api = Api(rest, prefix="/plot")
@@ -39,7 +39,7 @@ class ExistViews(Resource):
             IFP.update_date == latest, IFP.windcode.in_(funds)).all()
         data = [x[0] for x in data]
         years = [(latest - x).days / 365 for x in data]
-        mean = sum(years) / len(years)
+        mean = sum(years) / len(years) if len(years) else 0
         _max = max(years)
         years = cut(years, bins=range(0, ceil(_max)), labels=range(0, ceil(_max) - 1))
         years = (years.value_counts() / len(years)).to_dict()
@@ -125,6 +125,29 @@ class ScaleYearViews(Resource):
         data = sorted(data, key=lambda x: x["存续时间"])
         data = [{"基金简称": x["基金简称"], "存续时间": x["存续时间"], "基金规模": x["基金规模"], "近似年限": int(x["存续时间"])} for x in data]
         ret = {"data": data, "classify": classify, "date": latest.strftime("%Y-%m-%d")}
+        return ret
+
+
+@api.resource("/manager")
+class PlotManagerViews(Resource):
+    def post(self):
+        classify = request.json.get("classify")
+        latest = Classify.query.with_entities(Classify.update_date).order_by(Classify.update_date.desc()).first()[0]
+        funds = Classify.query.with_entities(Classify.windcode).filter(
+            Classify.classify.in_(classify), Classify.update_date == latest
+        ).all()
+        funds = list({x[0] for x in funds})
+        ids = Indicators
+        fme = FundManagerExtend
+        fm = FundManager
+        latest = ids.query.with_entities(ids.update_date).order_by(ids.update_date.desc()).first()[0]
+        ret = fme.query.join(fm, fm.windcode == fme.windcode).join(ids, ids.windcode == fme.windcode).with_entities(
+            fm.fund_fundmanager, fme.fund_manager_totalnetasset, fme.nav_periodicannualizedreturn, ids.numeric
+        ).filter(
+            fme.windcode.in_(funds), ids.indicator == "FUND_MANAGER_MANAGERWORKINGYEARS", ids.update_date == latest,
+            fme.rank == 1
+        ).all()
+        ret = [[round(x[3], 2), round(x[2], 4), round(x[1]/1e8, 2), x[0]] for x in ret]
         return ret
 
 

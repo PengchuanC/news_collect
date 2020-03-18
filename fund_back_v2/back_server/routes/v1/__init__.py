@@ -10,3 +10,5 @@ from .summaryviews import *
 from .portfolioviews import *
 from .plotviews import *
 from .filterviews import *
+from .attributionviews import *
+from .assetallocateviews import *

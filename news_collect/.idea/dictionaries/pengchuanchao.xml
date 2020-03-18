@@ -5,8 +5,11 @@
       <w>chinasecrity</w>
       <w>chinasecurity</w>
       <w>eastmoney</w>
+      <w>hibor</w>
       <w>kyodo</w>
+      <w>msci</w>
       <w>pymysql</w>
+      <w>sems</w>
       <w>sina</w>
     </words>
   </dictionary>

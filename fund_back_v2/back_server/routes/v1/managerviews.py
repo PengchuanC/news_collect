@@ -43,7 +43,7 @@ class ManagerViews(Resource):
         return ret
 
 
-@api.resource("/managed")
+@api.resource("/managed/")
 class ManagedViews(Resource):
     def get(self):
         latest = Classify.query.with_entities(Classify.update_date).order_by(Classify.update_date.desc()).first()[0]
