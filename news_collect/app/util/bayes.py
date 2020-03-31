@@ -15,7 +15,7 @@ def fetch_data():
     se = default_session()
     ret = se.query(News.title, News.abstract, News.keyword).filter(
         News.keyword.in_(["宏观", "金融", "商业", "日本"])
-    ).all()
+    ).limit(10000).offset(10000).all()
     se.close()
     ret = [(x[0] + str(x[1]), x[2]) for x in ret]
     x = [i[0] for i in ret]
