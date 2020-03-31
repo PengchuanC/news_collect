@@ -10,7 +10,7 @@ from fuzzywuzzy import fuzz
 
 from app.database.model import News
 from app.database.insert import Session
-from app.config import database_remote as database
+from app.config import database
 from app.logger import logs
 
 

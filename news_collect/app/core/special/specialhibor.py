@@ -83,7 +83,6 @@ class SpecialHiBor(SpecialCollector):
             abstract = "".join(abstract)
             news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source, keyword="资产配置")
             if "期货" not in title:
-                print(news.to_dict())
                 news_collections.append(news)
             time.sleep(5)
         session.close()
