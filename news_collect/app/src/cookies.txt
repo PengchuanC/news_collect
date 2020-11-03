@@ -1,5 +1,0 @@
-#LWP-Cookies-2.0
-Set-Cookie3: MBname=asin1014; path="/"; domain="www.hibor.org"; path_spec; expires="2022-07-10 16:00:00Z"; version=0
-Set-Cookie3: MBpermission=0; path="/"; domain="www.hibor.org"; path_spec; expires="2022-07-10 16:00:00Z"; version=0
-Set-Cookie3: c=""; path="/"; domain="www.hibor.org"; path_spec; expires="2019-11-15 16:00:00Z"; version=0
-Set-Cookie3: robih=5UrTkYnUnMrRmNsO; path="/"; domain="www.hibor.org"; path_spec; expires="2022-07-10 16:00:00Z"; version=0

@@ -47,6 +47,7 @@ class SpecialHiBor(SpecialCollector):
     def collect(self):
         url = self.url
         cookie = self.get_cookie()
+        print(cookie)
 
         data = {
             "index": 0,
@@ -54,7 +55,7 @@ class SpecialHiBor(SpecialCollector):
             "sslm": "all",
             "ssfw": "ybbt",
             "gjz": self.keyword,
-            "sjfw": -7,
+            "sjfw": 1,
             "page": self.page
         }
         session = r.session()
@@ -81,6 +82,7 @@ class SpecialHiBor(SpecialCollector):
             abstract = page.xpath("/html/body/div[2]/div[5]/div[1]/div[2]/div[8]/div[1]/div/p/span/text()")
             abstract = "".join(abstract)
             news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source, keyword="资产配置")
+            print(news)
             if "期货" not in title:
                 news_collections.append(news)
             time.sleep(5)

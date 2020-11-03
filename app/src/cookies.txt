@@ -1,0 +1,6 @@
+#LWP-Cookies-2.0
+Set-Cookie3: safedog-flow-item=035FE40DA0D003D09A9FA494E6E958C2; path="/"; domain=".hibor.org"; path_spec; expires="2019-10-28 16:00:12Z"; version=0
+Set-Cookie3: MBname=asin0; path="/"; domain="www.hibor.org"; path_spec; expires="2022-07-22 16:00:00Z"; version=0
+Set-Cookie3: MBpermission=0; path="/"; domain="www.hibor.org"; path_spec; expires="2022-07-22 16:00:00Z"; version=0
+Set-Cookie3: c=""; path="/"; domain="www.hibor.org"; path_spec; expires="2019-11-27 16:00:00Z"; version=0
+Set-Cookie3: robih=eVpV1UlWoO; path="/"; domain="www.hibor.org"; path_spec; expires="2022-07-22 16:00:00Z"; version=0

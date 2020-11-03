@@ -98,7 +98,7 @@ ignore = [
 # 关键字爬虫配置
 by_keyword = {
     "eastmoney": ["公募基金", "etf"],
-    "hibor": ["资产配置"]
+    "hibor": ["配置"]
 }
 
 # 项目路径
