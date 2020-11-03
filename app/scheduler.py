@@ -6,7 +6,7 @@ from apscheduler.executors.pool import ThreadPoolExecutor
 
 
 from app import api
-from app.config import website, database_remote as database, task_cycle
+from app.config import website, database, task_cycle
 from app.database.insert import Session
 from app.logger import logs
 
@@ -25,7 +25,11 @@ def schedule(website_name):
             logs.info(f"{datetime.now().strftime('%Y-%m-%d %H:%M')}  执行任务<{website_name} {section['section']}>")
             for i in range(1, 3):
                 section["page"] = i
-                news = getattr(api, website_name)(**section)
+                try:
+                    news = getattr(api, website_name)(**section)
+                except Exception as e:
+                    logs.error(e)
+                    break
                 for n in news:
                     n = api.revise(n)
                     if n:
@@ -55,21 +59,27 @@ def schedule_special_hibor():
     news = api.special_hibor()
     for n in news:
         session.insert_one(n)
+    logs.info("慧博资讯导入数据库完成")
+    print("慧博资讯导入数据库完成")
     session.close()
 
 
 def start_schedule():
     logs.info(f"开始执行爬虫任务，当前任务执行周期为@{hour}hours")
+    print(f"开始执行爬虫任务，当前任务执行周期为@{hour}hours")
     for name in website.keys():
+        schedule(name)
         scheduler.add_job(schedule, 'interval', hours=hour, seconds=second, args=(name,))
 
     scheduler.add_job(schedule_special, 'interval', hours=hour, seconds=second, )
 
     scheduler.add_job(schedule_special_search_api, 'interval', hours=hour, seconds=second, )
 
-    scheduler.add_job(schedule_special_hibor, 'interval', hours=12, seconds=second, )
+    scheduler.add_job(schedule_special_hibor, 'interval', hours=6, seconds=second, )
 
     schedule_special_hibor()
+
+    schedule_special()
 
     scheduler.start()
 

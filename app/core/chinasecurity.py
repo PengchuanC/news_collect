@@ -38,8 +38,12 @@ class ChinaSecurity(Collector):
             save_date = time.strptime(save_date, "%y-%m-%d %H:%M")
             response = r.get(url)
             html = etree.HTML(response.content)
-            source = html.cssselect("body > div:nth-child(9) > div.box835.hidden.left > div.article > div.info > "
+            try:
+                source = html.cssselect("body > div:nth-child(9) > div.box835.hidden.left > div.article > div.info > "
                                     "p:nth-child(2) > em:nth-child(2)")[0].text[3:]
+            except:
+                source = "中国证券报·中证网"
+
             try:
                 # abstract = html.cssselect("div.article-t.hidden > p:nth-child(1)")[0].text.strip()
                 abstracts = html.cssselect("div.article-t.hidden > p")

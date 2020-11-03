@@ -8,7 +8,8 @@ class Session(object):
         self.session = connector.session(self.engine)
 
     def insert_one(self, row):
-        self.session.add(row)
+        if row.abstract:
+            self.session.add(row)
         try:
             self.session.commit()
         except Exception as e:

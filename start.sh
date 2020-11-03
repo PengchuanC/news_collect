@@ -1,7 +1,7 @@
-#!/usr/bin/env sh
+#!/usr/bin/sh
 clear
 
-cd `dirname $0`
+cd $(dirname $0)
 pwd
 
 /usr/bin/python3 -m app

@@ -15,25 +15,26 @@ from app.config import base_dir
 class SpecialHiBor(SpecialCollector):
     login_url = "http://www.hibor.org/toplogin.asp?action=login"
     url = "http://www.hibor.org/newweb/web/search"
+    proxy = None
 
     def get_cookie(self):
         payload = {
             "name": "13269431992",
             "pwd": "abcd1234",
-            "tijiao.x": 8,
+            "tijiao.x": 7,
             "tijiao.y": 9,
             "checkbox": "on"
         }
         session = r.session()
-        session.cookies = cookiejar.LWPCookieJar(filename=os.path.join(base_dir, "./src/cookies.txt"))
-        ret = session.post(self.login_url, data=payload, headers=header)
-        session.cookies.save()
+        session.cookies = cookiejar.LWPCookieJar(filename=os.path.join(base_dir, "src/cookies.txt"))
+        session.post(self.login_url, data=payload, headers=header)
+        # session.cookies.save()
         session.close()
         cookie = session.cookies
         return cookie
 
     def cookie(self):
-        cookie = os.path.join(base_dir, "./src/cookies.txt")
+        cookie = os.path.join(base_dir, "src/cookies.txt")
         if os.path.exists(cookie):
             cookie = cookiejar.LWPCookieJar(filename=cookie)
         else:
@@ -60,7 +61,6 @@ class SpecialHiBor(SpecialCollector):
         }
         session = r.session()
         session.cookies = cookie
-
         resp = session.post(url, headers=header, data=data)
         content = resp.content.decode("utf-8")
         if not content:
@@ -78,8 +78,9 @@ class SpecialHiBor(SpecialCollector):
             source = a.cssselect("td > div.tab_divtxt > span:nth-child(3)")[0].text
             source = f"慧博-{source[3:]}"
             page = session.post(url, headers=header).content
+            page = str(page, encoding="gbk")
             page = etree.HTML(page)
-            abstract = page.xpath("/html/body/div[2]/div[5]/div[1]/div[2]/div[8]/div[1]/div/p/span/text()")
+            abstract = page.xpath("//div[@class='p_main']/p/span/text()")
             abstract = "".join(abstract)
             news = News(title=title, abstract=abstract, url=url, savedate=save_date, source=source, keyword="资产配置")
             print(news)

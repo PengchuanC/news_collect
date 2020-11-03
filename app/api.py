@@ -2,7 +2,8 @@ from app.core import *
 from app.core.special import *
 from app.database.model import News
 from app.config import keyword, by_keyword, ignore
-from app.util.similar import Similar
+from app.util.similar import Similarity as Similar
+from app.util.bayes import predict
 from app.logger import logs
 
 
@@ -49,6 +50,11 @@ def revise(row: News):
     for ign in ignore:
         if ign in title:
             return None
+    cls = row.keyword
+    context = title + str(content)
+    pre = predict(context)
+    if pre != "金融":
+        return row
 
     company = keyword["商业"]
     japan = keyword["日本"]
@@ -70,11 +76,6 @@ def revise(row: News):
         if any({key in title, key in content}):
             row.keyword = "宏观"
             return row
-    # for section, keywords in keyword.items():
-    #     for k in keywords:
-    #         if k in title:
-    #             row.keyword = section
-    #             return row
     return row
 
 

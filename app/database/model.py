@@ -7,10 +7,10 @@ base = declarative_base()
 
 
 class News(base):
-    __tablename__ = "finance_news"
+    __tablename__ = "t_ff_news"
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(200), unique=True)
-    abstract = Column(Text)
+    abstract = Column(Text, nullable=False)
     url = Column(Text)
     source = Column(String(20))
     savedate = Column(DateTime, nullable=False)
