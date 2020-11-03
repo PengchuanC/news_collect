@@ -12,10 +12,22 @@ def run():
 @run.command()
 def collect_all():
     for name in website.keys():
-        schedule(name)
-    schedule_special()
-    schedule_special_search_api()
-    schedule_special_hibor()
+        try:
+            schedule(name)
+        except Exception as e:
+            print(e)
+    try:
+        schedule_special()
+    except Exception as e:
+        print(e)
+    try:
+        schedule_special_search_api()
+    except Exception as e:
+        print(e)
+    try:
+        schedule_special_hibor()
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__':
