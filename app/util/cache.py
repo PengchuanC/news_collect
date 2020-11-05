@@ -1,16 +1,15 @@
-import os
 import shelve
+from pathlib import Path
 
 from datetime import date
-from functools import wraps
 
-base_dir = os.path.dirname(__file__)
-data_dir = os.path.join(base_dir, "data")
+base_dir = Path(__file__).parent
+data_dir = base_dir / 'data'
 
 
 class LocalStorage(object):
     def __init__(self):
-        self.file = os.path.join(data_dir, "storage")
+        self.file = str(data_dir / 'storage')
 
     def dump(self, name, data):
         with shelve.open(self.file) as s:
