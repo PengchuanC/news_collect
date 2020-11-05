@@ -76,8 +76,10 @@ def start_schedule():
     scheduler.add_job(schedule_special_search_api, 'interval', hours=hour, seconds=second, )
 
     scheduler.add_job(schedule_special_hibor, 'interval', hours=6, seconds=second, )
-
-    schedule_special_hibor()
+    try:
+        schedule_special_hibor()
+    except Exception as e:
+        print(e)
 
     schedule_special()
 
