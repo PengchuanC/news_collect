@@ -47,7 +47,7 @@ def collect_all_async():
     for t in (normal, schedule_special, schedule_special_hibor, schedule_special_search_api):
         thread = pool.submit(t)
         tasks.append(thread)
-    wait(tasks, 60*20)
+    wait(tasks, 60*40)
     os._exit(0)
 
 
