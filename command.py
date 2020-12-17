@@ -2,7 +2,8 @@ import click
 import os
 
 from concurrent.futures import ThreadPoolExecutor, wait
-from app.scheduler import schedule, schedule_special, schedule_special_hibor, schedule_special_search_api
+from app.scheduler import \
+    (schedule, schedule_special, schedule_special_hibor, schedule_special_search_api, start_schedule)
 from app.config import website
 
 
@@ -49,6 +50,11 @@ def collect_all_async():
         tasks.append(thread)
     wait(tasks, 60*40)
     os._exit(0)
+
+
+@run.command()
+def forever():
+    start_schedule()
 
 
 if __name__ == '__main__':
